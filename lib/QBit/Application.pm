@@ -339,9 +339,9 @@ B<Return value:> type, description
 sub check_rights {
     my ($self, @rights) = @_;
 
-    my $registered_rights = $self->get_registred_rights();
+    $self->{__REGISTERED_RIGHTS__} ||= $self->get_registred_rights();
     foreach (map {ref($_) ? @$_ : $_} @rights) {
-        throw gettext('Unknown right "%s"', $_) unless $registered_rights->{$_};
+        throw gettext('Unknown right "%s"', $_) unless $self->{__REGISTERED_RIGHTS__}{$_};
     }
 
     return FALSE unless @rights;
