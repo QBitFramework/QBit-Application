@@ -339,6 +339,11 @@ B<Return value:> type, description
 sub check_rights {
     my ($self, @rights) = @_;
 
+    my $registered_rights = $self->get_registred_rights();
+    foreach (map {ref($_) ? @$_ : $_} @rights) {
+        throw gettext('Unknown right "%s"', $_) unless $registered_rights->{$_};
+    }
+
     return FALSE unless @rights;
 
     my $cur_user = $self->get_option('cur_user');
