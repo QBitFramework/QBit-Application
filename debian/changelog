@@ -1,3 +1,11 @@
+libqbit-application-perl (0.009) raring; urgency=low
+
+  * perltidy
+
+  * fix ApplicationPath: '/t_lib/Application.pm' -> './'
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Sun, 24 Jan 2016 19:08:00 +0300
+
 libqbit-application-perl (0.008) raring; urgency=low
 
   * Fixed descedant check
