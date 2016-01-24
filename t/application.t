@@ -18,6 +18,8 @@ my $tmp = $app->add_tmp_rights('tmp_right_for_wo_cur_user_test');
 is($app->check_rights('tmp_right_for_wo_cur_user_test'), TRUE, 'Checking tmp rights without cur_user');
 undef($tmp);
 
+is($app->get_option('ApplicationPath'), 't/', 'check ApplicationPath');
+
 $app->post_run();
 
 done_testing();

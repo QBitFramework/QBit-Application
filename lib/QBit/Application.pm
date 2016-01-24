@@ -58,10 +58,10 @@ sub init {
 
     my $app_module = ref($self) . '.pm';
     $app_module =~ s/::/\//g;
-
+    
     $self->{'__ORIG_OPTIONS__'}{'FrameworkPath'} = $INC{'QBit/Class.pm'} =~ /(.+?)QBit\/Class\.pm$/ ? $1 : './';
     $self->{'__ORIG_OPTIONS__'}{'ApplicationPath'} =
-        ($INC{$app_module} || '') =~ /(.*?\/?)(?:lib\/*)?$app_module$/
+        ($INC{$app_module} || '') =~ /(.*?\/?)(?:[^\/]*lib\/*)?$app_module$/
       ? ($1 || './')
       : './';
 
