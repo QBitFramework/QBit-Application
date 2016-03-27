@@ -1,3 +1,9 @@
+libqbit-application-perl (0.010) raring; urgency=low
+
+  * upload to cpan
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Sun, 27 Mar 2016 23:21:40 +0300
+
 libqbit-application-perl (0.009) raring; urgency=low
 
   * perltidy
