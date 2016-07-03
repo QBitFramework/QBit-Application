@@ -193,7 +193,7 @@ sub get_option {
     my $res = $self->{'__OPTIONS__'}{$name} || return $default;
 
     foreach my $str (ref($res) eq 'ARRAY' ? @$res : $res) {
-        while ($str =~ /^(.*?)(?:\${([\w\d_]+)})(.*)$/) {
+        while ($str =~ /^(.*?)(?:\$\{([\w\d_]+)\})(.*)$/) {
             $str = ($1 || '') . ($self->get_option($2) || '') . ($3 || '');
         }
     }
