@@ -1,3 +1,9 @@
+libqbit-application-perl (0.011) raring; urgency=low
+
+  * fix regexp
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Sun, 03 Jul 2016 18:28:01 +0300
+
 libqbit-application-perl (0.010) raring; urgency=low
 
   * upload to cpan

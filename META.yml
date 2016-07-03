@@ -3,6 +3,7 @@ abstract: 'Package description'
 author:
   - 'Sergei Svistunov <sergei-svistunov@yandex.ru>'
 build_requires:
+  Test::Deep: 0
   Test::More: 0
   lib: 0
 configure_requires:
@@ -20,4 +21,4 @@ requires:
   qbit: 0
   strict: 0
   warnings: 0
-version: 0.010
+version: 0.011

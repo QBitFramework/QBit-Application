@@ -1,10 +1,34 @@
 ==================================================
-Changes from 2015-03-28 00:00:00 +0000 to present.
+Changes from 2015-07-04 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.010 at 2016-03-27 20:21:40 +0000
+version 0.011 at 2016-07-03 15:28:00 +0000
 ------------------------------------------
+
+  Change: b767c4c8d4e09f36078cf63f7a4735a7ae8546c4
+  Author: Sergei Svistunov <sergei-svistunov@yandex.ru>
+  Date : 2016-07-03 19:26:09 +0000
+
+    Merge pull request #6 from Madskill/fix_regexp
+
+    fix regexp 
+
+  Change: eb6a2339d7b90f925fdd9b52ea08ce43c85eb9ba
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2016-07-03 18:11:23 +0000
+
+    fix regexp 
+
+------------------------------------------
+version 0.010 at 2016-03-27 20:21:53 +0000
+------------------------------------------
+
+  Change: c8dd4888b288b8c1fd62d55d381a9a5a221fd39e
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2016-03-27 23:21:53 +0000
+
+    Version 0.010 
 
   Change: 079e9741eb665e98d6e1a1eb726e9e69ef191411
   Author: Igor <igor-sverdlov@mail.ru>
@@ -51,5 +75,5 @@ version 0.009 at 2016-01-24 16:08:08 +0000
     fix ApplicationPath: '/t_lib/Application.pm' -> './' 
 
 ================================================
-Plus 8 releases after 2015-03-28 00:00:00 +0000.
+Plus 8 releases after 2015-07-04 00:00:00 +0000.
 ================================================

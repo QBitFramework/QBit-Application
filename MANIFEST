@@ -20,5 +20,6 @@ lib/QBit/Application/Part.pm
 lib/QBit/Application/_Utils/TmpLocale.pm
 lib/QBit/Application/_Utils/TmpRights.pm
 t/application.t
+t/lib/TestApplication.cfg
 t/lib/TestApplication.pm
 t/lib/TestApplication/Model/TestModel.pm

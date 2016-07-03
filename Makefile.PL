@@ -23,10 +23,11 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Test::Deep" => 0,
     "Test::More" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.010",
+  "VERSION" => "0.011",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -35,6 +36,7 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "QBit::Class" => 0,
+  "Test::Deep" => 0,
   "Test::More" => 0,
   "base" => 0,
   "lib" => 0,
