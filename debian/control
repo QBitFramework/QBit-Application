@@ -2,7 +2,7 @@ Source: libqbit-application-perl
 Section: perl
 Priority: extra
 Maintainer: Sergei Svistunov <sergei-svistunov@yandex.ru>
-Build-Depends: debhelper (>= 8.0.0), perl, libqbit-perl, libqbit-class-perl, libqbit-timelog-perl
+Build-Depends: debhelper (>= 8.0.0), perl, libtest-deep-perl, libqbit-perl, libqbit-class-perl, libqbit-timelog-perl
 Standards-Version: 3.9.4
 
 Package: libqbit-application-perl
