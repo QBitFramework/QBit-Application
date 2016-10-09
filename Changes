@@ -1,10 +1,34 @@
 ==================================================
-Changes from 2015-07-04 00:00:00 +0000 to present.
+Changes from 2015-10-10 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.011 at 2016-07-03 15:28:00 +0000
+version 0.012 at 2016-10-09 08:56:57 +0000
 ------------------------------------------
+
+  Change: fd2ff1623aa5536d42283cbedcaa9ae2ca6beda9
+  Author: Igor <igor-sverdlov@mail.ru>
+  Date : 2016-10-09 12:56:14 +0000
+
+    Merge pull request #7 from Madskill/fix_dependency
+
+    added TestTimeLog 
+
+  Change: 5ca1076977a669332791e8aebe467a4003caced0
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2016-10-08 17:37:47 +0000
+
+    added TestTimeLog 
+
+------------------------------------------
+version 0.011 at 2016-07-03 15:28:31 +0000
+------------------------------------------
+
+  Change: 1fb220a02d63a2bb7de2ec27437db5c3ab2d97ec
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2016-07-03 18:28:31 +0000
+
+    Version 0.011 
 
   Change: b767c4c8d4e09f36078cf63f7a4735a7ae8546c4
   Author: Sergei Svistunov <sergei-svistunov@yandex.ru>
@@ -75,5 +99,5 @@ version 0.009 at 2016-01-24 16:08:08 +0000
     fix ApplicationPath: '/t_lib/Application.pm' -> './' 
 
 ================================================
-Plus 8 releases after 2015-07-04 00:00:00 +0000.
+Plus 8 releases after 2015-10-10 00:00:00 +0000.
 ================================================

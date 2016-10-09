@@ -23,3 +23,4 @@ t/application.t
 t/lib/TestApplication.cfg
 t/lib/TestApplication.pm
 t/lib/TestApplication/Model/TestModel.pm
+t/lib/TestTimeLog.pm
