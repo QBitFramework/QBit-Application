@@ -14,7 +14,7 @@ $app->pre_run();
 is($app->test_model->method(), 12345, 'Checking model\'s mehod call');
 
 # Check tmp rights without cur_user
-$app->set_option(cur_user => undef);
+$app->cur_user({});
 my $tmp = $app->add_tmp_rights('tmp_right_for_wo_cur_user_test');
 is($app->check_rights('tmp_right_for_wo_cur_user_test'), TRUE, 'Checking tmp rights without cur_user');
 undef($tmp);
