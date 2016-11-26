@@ -308,16 +308,27 @@ sub cur_user {
 
     $self->set_option('cur_user', $user);
 
-    if (%$user && $self->can('rbac')) {
-        $user->{'roles'} = $self->rbac->get_cur_user_roles();
-        $user->{'rights'} =
-          [map {$_->{'right'}}
-              @{$self->rbac->get_roles_rights(fields => [qw(right)], role_id => [keys(%{$user->{'roles'}})])}];
-
-        $self->set_cur_user_rights($user->{'rights'});
-    }
+    $self->_fix_cur_user($user);
 
     return $user;
+}
+
+sub _fix_cur_user {
+    my ($self, $cur_user) = @_;
+
+    if (%$cur_user && $self->can('rbac')) {
+        $cur_user->{'roles'}  = $self->rbac->get_cur_user_roles();
+        $cur_user->{'rights'} = [
+            map {$_->{'right'}} @{
+                $self->rbac->get_roles_rights(
+                    fields  => {right => {distinct => ['right']}},
+                    role_id => [keys(%{$cur_user->{'roles'}})]
+                )
+              }
+        ];
+
+        $self->set_cur_user_rights($cur_user->{'rights'});
+    }
 }
 
 =head2 set_cur_user_rights
@@ -387,16 +398,9 @@ sub refresh_rights {
 
     my $cur_user = $self->cur_user();
 
-    if (%$cur_user && $self->can('rbac')) {
-        $self->revoke_cur_user_rights($cur_user->{'rights'} // []);
+    $self->revoke_cur_user_rights($cur_user->{'rights'} // []);
 
-        $cur_user->{'roles'} = $self->rbac->get_cur_user_roles();
-        $cur_user->{'rights'} =
-          [map {$_->{'right'}}
-              @{$self->rbac->get_roles_rights(fields => [qw(right)], role_id => [keys(%{$cur_user->{'roles'}})])}];
-
-        $self->set_cur_user_rights($cur_user->{'rights'});
-    }
+    $self->_fix_cur_user($cur_user);
 
     return TRUE;
 }
