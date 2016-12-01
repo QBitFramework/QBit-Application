@@ -1,3 +1,11 @@
+libqbit-application-perl (0.013) raring; urgency=low
+
+  * unique rights and added _fix_cur_user
+
+  * speed up check_rights
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Thu, 01 Dec 2016 21:32:44 +0300
+
 libqbit-application-perl (0.012) raring; urgency=low
 
   * added TestTimeLog
