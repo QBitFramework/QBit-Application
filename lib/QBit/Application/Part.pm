@@ -103,7 +103,7 @@ sub import {
 
     {
         no strict 'refs';
-        foreach my $method (qw(check_rights)) {
+        foreach my $method (qw(check_rights cur_user)) {
             *{"${package}::${method}"} = sub {shift->app->$method(@_)};
         }
     }

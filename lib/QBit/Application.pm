@@ -36,7 +36,11 @@ sub init {
     my ($self) = @_;
 
     $self->SUPER::init();
+
+    $self->{'__CURRENT_USER_RIGHTS__'} = {};
+
     $self->{'__ORIG_OPTIONS__'} = {};
+
     package_merge_isa_data(
         ref($self),
         $self->{'__ORIG_OPTIONS__'},
@@ -77,6 +81,10 @@ sub init {
 
     if ($self->get_option('preload_accessors')) {
         $self->$_ foreach keys(%{$self->get_models()});
+    }
+
+    if ($self->get_option('install_die_handler')) {
+        $SIG{__DIE__} = \&qbit::Exceptions::die_handler;
     }
 
     delete($self->{'__OPTIONS__'});    # Options initializing in pre_run
@@ -167,7 +175,7 @@ sub use_config {
 
 =head2 get_option
 
-Short method description
+return option by name
 
 B<Arguments:>
 
@@ -175,26 +183,51 @@ B<Arguments:>
 
 =item
 
-B<$name> - type, description
+B<$name> - string
 
 =item
 
-B<$default> - type, description
+B<$default> - default value
 
 =back
 
-B<Return value:> type, description
+B<Return value:> value
+
+    #> pwd
+    #
+    # /home/app
+    #
+    #> cat ./lib/Application.cfg
+    #
+    # salt => 'terc3s',
+    # path => '${ApplicationPath}data',
+    # lib  => ['./t_lib', '${ApplicationPath}lib'],
+    # opt  => {
+    #     key => 'value',
+    # }
+
+    my $salt = $self->get_option('salt', 's3cret'); # 'terc3s'
+
+    my $salt2 = $self->get_option('salt2', 's3cret'); # 's3cret'
+
+    my $path = $self->get_option('path'); # '/home/app/data'
+
+    my $lib = $self->get_option('lib'); # ['./t_lib', '/home/app/lib']
+
+    my $opts = $self->get_option('opt', {key => 'value2'}); # {key => 'value'}
 
 =cut
 
 sub get_option {
     my ($self, $name, $default) = @_;
 
-    my $res = $self->{'__OPTIONS__'}{$name} || return $default;
+    my $res = $self->{'__OPTIONS__'}{$name} // $default;
 
-    foreach my $str (ref($res) eq 'ARRAY' ? @$res : $res) {
-        while ($str =~ /^(.*?)(?:\$\{([\w\d_]+)\})(.*)$/) {
-            $str = ($1 || '') . ($self->get_option($2) || '') . ($3 || '');
+    if (defined($res) && (!ref($res) || ref($res) eq 'ARRAY')) {
+        foreach my $str (ref($res) eq 'ARRAY' ? @$res : $res) {
+            while ($str =~ /^(.*?)(?:\$\{([\w\d_]+)\})(.*)$/) {
+                $str = ($1 || '') . ($self->get_option($2) || '') . ($3 || '');
+            }
         }
     }
 
@@ -203,7 +236,7 @@ sub get_option {
 
 =head2 set_option
 
-Short method description
+set option
 
 B<Arguments:>
 
@@ -211,15 +244,19 @@ B<Arguments:>
 
 =item
 
-B<$name> - type, description
+B<$name> - string
 
 =item
 
-B<$value> - type, description
+B<$value> - value
 
 =back
 
-B<Return value:> type, description
+B<Return value:> value
+
+    $app->set_option('salt', 's3cret');
+    
+    $app->set_option('locales', [qw(ru en)]);
 
 =cut
 
@@ -227,6 +264,145 @@ sub set_option {
     my ($self, $name, $value) = @_;
 
     $self->{'__OPTIONS__'}{$name} = $value;
+}
+
+=head2 cur_user
+
+set or get current user
+
+B<Arguments:>
+
+=over
+
+=item
+
+B<$user> - hash ref
+
+=back
+
+B<Return value:> hash ref
+
+    my $user = {id => 1};
+
+    $cur_user = $app->cur_user($user); # set current user
+
+    # if use rbac
+    # {id => 1, roles => {3 => {id => 3, name => 'ROLE 3', description => 'ROLE 3'}}, rights => ['RIGHT1', 'RIGHT2']}
+    # or
+    # {id => 1}
+
+    $cur_user = $app->cur_user(); # return current user or {}
+
+    $app->cur_user({}); # remove current user
+
+=cut
+
+sub cur_user {
+    my ($self, $user) = @_;
+
+    my $cur_user = $self->{'__OPTIONS__'}{'cur_user'} // {};
+
+    return $cur_user unless defined($user);
+
+    $self->revoke_cur_user_rights($cur_user->{'rights'} // []);
+
+    $self->set_option('cur_user', $user);
+
+    $self->_fix_cur_user($user);
+
+    return $user;
+}
+
+sub _fix_cur_user {
+    my ($self, $cur_user) = @_;
+
+    if (%$cur_user && $self->can('rbac')) {
+        $cur_user->{'roles'}  = $self->rbac->get_cur_user_roles();
+        $cur_user->{'rights'} = [
+            map {$_->{'right'}} @{
+                $self->rbac->get_roles_rights(
+                    fields  => {right => {distinct => ['right']}},
+                    role_id => [keys(%{$cur_user->{'roles'}})]
+                )
+              }
+        ];
+
+        $self->set_cur_user_rights($cur_user->{'rights'});
+    }
+}
+
+=head2 set_cur_user_rights
+
+set rights for current user
+
+B<Arguments:>
+
+=over
+
+=item
+
+B<$rights> - array ref
+
+=back
+
+    $app->set_cur_user_rights([qw(RIGHT1 RIGHT2)]);
+
+=cut
+
+sub set_cur_user_rights {
+    my ($self, $rights) = @_;
+
+    $self->{'__CURRENT_USER_RIGHTS__'}{$_}++ foreach @$rights;
+}
+
+=head2 revoke_cur_user_rights
+
+revoke rights for current user
+
+B<Arguments:>
+
+=over
+
+=item
+
+B<$rights> - array ref
+
+=back
+
+    $app->revoke_cur_user_rights([qw(RIGHT1 RIGHT2)]);
+
+=cut
+
+sub revoke_cur_user_rights {
+    my ($self, $rights) = @_;
+
+    foreach (@$rights) {
+        delete($self->{'__CURRENT_USER_RIGHTS__'}{$_}) unless --$self->{'__CURRENT_USER_RIGHTS__'}{$_};
+    }
+}
+
+=head2 refresh_rights
+
+refresh rights for current user
+
+    my $cur_user_id = $app->cur_user()->{'id'};
+
+    $app->rbac->set_user_role($cur_user_id, 3); # role_id = 3
+
+    $app->refresh_rights();
+
+=cut
+
+sub refresh_rights {
+    my ($self) = @_;
+
+    my $cur_user = $self->cur_user();
+
+    $self->revoke_cur_user_rights($cur_user->{'rights'} // []);
+
+    $self->_fix_cur_user($cur_user);
+
+    return TRUE;
 }
 
 =head2 get_models
@@ -324,7 +500,7 @@ sub get_registred_right_groups {&get_registered_right_groups;}
 
 =head2 check_rights
 
-Short method description
+check rights for current user
 
 B<Arguments:>
 
@@ -332,11 +508,15 @@ B<Arguments:>
 
 =item
 
-B<@rights> - type, description
+B<@rights> - array of strings or array ref
 
 =back
 
-B<Return value:> type, description
+B<Return value:> boolean
+
+    $app->check_rights('RIGHT1', 'RIGHT2'); # TRUE if has rights 'RIGHT1' and 'RIGHT2'
+
+    $app->check_rights(['RIGHT1', 'RIGHT2']); # TRUE if has rights 'RIGHT1' or 'RIGHT2'
 
 =cut
 
@@ -345,29 +525,11 @@ sub check_rights {
 
     return FALSE unless @rights;
 
-    my $cur_user = $self->get_option('cur_user');
-    my $cur_rights;
-
-    if ($cur_user) {
-        $cur_rights = $cur_user->{'rights'};
-
-        unless (defined($cur_rights)) {
-            my $cur_roles = $self->rbac->get_cur_user_roles();
-
-            $cur_rights =
-              {map {$_->{'right'} => TRUE}
-                  @{$self->rbac->get_roles_rights(fields => [qw(right)], role_id => [keys(%$cur_roles)])}};
-
-            $cur_user->{'rights'} = $cur_rights if defined($cur_user);
-        }
-    }
-
-    my %user_and_temp_rights;
-    push_hs(%user_and_temp_rights, $cur_rights) if $cur_rights;
-    push_hs(%user_and_temp_rights, \%{$self->{'__TMP_RIGHTS__'} || {}});
-
     foreach (@rights) {
-        return FALSE unless ref($_) ? scalar(grep($user_and_temp_rights{$_}, @$_)) : $user_and_temp_rights{$_};
+        return FALSE
+          unless ref($_)
+            ? scalar(grep($self->{'__CURRENT_USER_RIGHTS__'}{$_}, @$_))
+            : $self->{'__CURRENT_USER_RIGHTS__'}{$_};
     }
 
     return TRUE;
