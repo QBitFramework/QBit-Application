@@ -1,10 +1,34 @@
 ==================================================
-Changes from 2015-12-02 00:00:00 +0000 to present.
+Changes from 2016-01-13 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.013 at 2016-12-01 18:32:44 +0000
+version 0.014 at 2017-01-12 05:39:57 +0000
 ------------------------------------------
+
+  Change: 9d15655ed00260317050464d94b04d4935d3092d
+  Author: Igor <igor-sverdlov@mail.ru>
+  Date : 2017-01-12 09:39:10 +0000
+
+    Merge pull request #9 from Madskill/fix_current_rights
+
+    clear current user rights 
+
+  Change: f4282d58f86c184b14e4807ca59653f3120fc62f
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2017-01-12 08:36:34 +0000
+
+    clear current user rights 
+
+------------------------------------------
+version 0.013 at 2016-12-01 18:32:55 +0000
+------------------------------------------
+
+  Change: b22267d7317b7a3ab6bd510bf4f672b89da669ae
+  Author: Igor Sverdlov <igor-sverdlov@mail.ru>
+  Date : 2016-12-01 21:32:55 +0000
+
+    Version 0.013 
 
   Change: 5749d013b2689336017d6ddd7f1f1cc3a645e4f2
   Author: Igor <igor-sverdlov@mail.ru>
@@ -129,5 +153,5 @@ version 0.009 at 2016-01-24 16:08:08 +0000
     fix ApplicationPath: '/t_lib/Application.pm' -> './' 
 
 ================================================
-Plus 8 releases after 2015-12-02 00:00:00 +0000.
+Plus 8 releases after 2016-01-13 00:00:00 +0000.
 ================================================

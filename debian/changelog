@@ -1,3 +1,9 @@
+libqbit-application-perl (0.014) raring; urgency=low
+
+  * clear current user rights
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Thu, 12 Jan 2017 08:39:58 +0300
+
 libqbit-application-perl (0.013) raring; urgency=low
 
   * unique rights and added _fix_cur_user
