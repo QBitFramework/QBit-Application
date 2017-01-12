@@ -37,8 +37,6 @@ sub init {
 
     $self->SUPER::init();
 
-    $self->{'__CURRENT_USER_RIGHTS__'} = {};
-
     $self->{'__ORIG_OPTIONS__'} = {};
 
     package_merge_isa_data(
@@ -632,6 +630,8 @@ B<Return value:> type, description
 
 sub pre_run {
     my ($self) = @_;
+
+    $self->{'__CURRENT_USER_RIGHTS__'} = {};
 
     $self->{'__OPTIONS__'} = clone($self->{'__ORIG_OPTIONS__'});
 
