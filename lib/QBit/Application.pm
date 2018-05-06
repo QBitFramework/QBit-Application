@@ -147,7 +147,7 @@ B<Example:>
 
   __PACKAGE__->config_opts(param_name => 'Param');
   
-  # late in your code
+  # later in your code:
   
   my $param = $app->get_option('param_name'); # 'Param'
 
