@@ -47,6 +47,10 @@ cmp_deeply(
     'get param3 from config'
 );
 
+is($app->get_option('global_param'), 'GlobalParam', 'JSON config ok');
+
+is($app->get_option('global_param2'), 'Redefined', 'Param redefined');
+
 $app->post_run();
 
 done_testing();
