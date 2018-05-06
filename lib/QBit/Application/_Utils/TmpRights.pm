@@ -11,16 +11,13 @@ sub init {
     throw Exception::BadArguments gettext('Missed requred fields "%s"', join(', ', @missed_required_params))
       if @missed_required_params;
 
-    ++$self->{'app'}->{'__TMP_RIGHTS__'}{$_} foreach @{$self->{'rights'}};
-
+    $self->{'app'}->set_cur_user_rights($self->{'rights'});
 }
 
 sub DESTROY {
     my ($self) = @_;
 
-    foreach (@{$self->{'rights'}}) {
-        delete($self->{'app'}->{'__TMP_RIGHTS__'}{$_}) unless --$self->{'app'}->{'__TMP_RIGHTS__'}{$_};
-    }
+    $self->{'app'}->revoke_cur_user_rights($self->{'rights'});
 }
 
 TRUE;
